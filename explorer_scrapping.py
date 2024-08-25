@@ -25,3 +25,5 @@ for h3 in tds :
     links.append('https://books.toscrape.com/' + link)
     time.sleep(2)
 print(links)
+with open('results_url.txt', 'w') as file:
+    file.write(links +'\n')    
