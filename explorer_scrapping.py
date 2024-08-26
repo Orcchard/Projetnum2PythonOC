@@ -25,7 +25,7 @@ for i in range(5):
             link = a['href']
 #on reconstitute le lien à link created en amont
             links.append('https://books.toscrape.com/' + link)
-            time.sleep(1)
+            time.sleep(2)
             print(links)
         #with open('results_url.txt', 'w') as file:
             #file.write(links +'\n')    
