@@ -11,7 +11,8 @@ for i in range(5):
     url ="https://books.toscrape.com/catalogue/category/books/sequential-art_5/"+ c
     response = requests.get(url)
     if response.ok:
-        print('page :'+ str(i))
+        print('page :'+ str(i)
+              )
         print(response)
     else:
         print(f"wrong pas de resultat.Status:{response.status_code}")  
@@ -24,7 +25,7 @@ for i in range(5):
             link = a['href']
 #on reconstitute le lien à link created en amont
             links.append('https://books.toscrape.com/' + link)
-            time.sleep(2)
+            time.sleep(1)
             print(links)
         #with open('results_url.txt', 'w') as file:
             #file.write(links +'\n')    
