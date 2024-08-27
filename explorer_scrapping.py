@@ -11,21 +11,17 @@ for i in range(5):
     url ="https://books.toscrape.com/catalogue/category/books/sequential-art_5/"+ c
     response = requests.get(url)
     if response.ok:
-        print('page :'+ str(i)
-              )
-        print(response)
-    else:
-        print(f"wrong pas de resultat.Status:{response.status_code}")  
+        print(response) 
+        print(url)
         soup =  BeautifulSoup(response.text, 'lxml')
 #on search les elements h3 à inside la page 
-        tds = soup.findAll('h3') 
+tds = soup.findAll('h3') 
 #pour each element td on va search le a
-        for h3 in tds :
+for h3 in tds :
             a = h3.find('a')
             link = a['href']
 #on reconstitute le lien à link created en amont
-            links.append('https://books.toscrape.com/' + link)
+            links.append('https://books.toscrape.com/' + link.replace("../../.." , "catalogue"))
             time.sleep(2)
-            print(links)
-        #with open('results_url.txt', 'w') as file:
-            #file.write(links +'\n')    
+with open('results_url.txt', 'w') as file:
+            file.write(links +'\n')
