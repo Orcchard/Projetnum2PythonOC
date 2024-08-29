@@ -20,10 +20,10 @@ if table:
     upc = upc_row.find_next_sibling('td').text
     print(upc)
     #extraire le titre du livre
-title = soup.find('h1').text
+title = soup.find('h1').text.strip()
 print(str(title))
 #récuperer l'url ou figure le livre selectionné
-url_category='https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html'
+url_category= url
 print(url_category)
 #recuperer le prix hors taxe puis TTC
 price_ht = soup.find('th',string="Price (excl. tax)").find_next_sibling("td").string
@@ -32,15 +32,51 @@ print(price_ht)
 print(price_ttc)
 #extraire Number available
 product_avaib = soup.find('th',string="Availability").find_next_sibling("td").string
-print(product_avaib)
+print(product_avaib.replace("(" , ":"))
 #extraire la catégorie
 breadcrumb =soup.find('ul', class_="breadcrumb")
 
-print(breadcrumb)
+#print(breadcrumb)
 category = breadcrumb.find_all('a')
 categorie=category[-1].text.strip()
-print(len('category'))
+print(len('categorie'))
 print(categorie)
+#créer l'url de l' image du livre selectionné
+picture = soup.find("img")
+picture_url = picture["src"]
+print(picture_url)
+image_url = "https://books.toscrape.com/" + picture_url.replace("../../", "")
+print(image_url)
+#création d'un dictionnaire pour stocker les données du livre sélectionné
+data_produit = {"product_page_url" : url_category,
+                "universal_product_code" : upc,
+                "title" : title,
+                "price_including_tax" : price_ttc,
+                "price_excluding_price" : price_ht,
+                "number_available" : product_avaib,
+                "category" : categorie,
+                "review_rating" : rev_rating,
+                "image_url" : image_url,
+                }
+#ecrire les data dans un fichier csv
+with open('product_information.csv', 'w') as file:
+        writer = csv.DictWriter(file , fieldnames=data_produit.keys())
+        writer.writeheader()
+        writer.writerow(data_produit)
+        
+    
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
