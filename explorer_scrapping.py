@@ -30,6 +30,6 @@ time.sleep(2)
 for url in links:
     print(url)
     #print(f"url est de type: {type(url)}")          
-    with open('results_url.txt', 'w') as file:
-        file.write(url+'\n')
+    #with open('results_url.txt', 'w') as file:
+        #file.write(url+'\n')
         
