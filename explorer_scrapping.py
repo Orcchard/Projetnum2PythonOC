@@ -3,15 +3,19 @@ import csv
 from bs4 import BeautifulSoup
 import time
 #import string
+#je créé une variable
 links =[]
 #la category sequential art a 4 pages
+"""
 for i in range(5):
     c = (f"page-{str(i)}.html" )
     print(c)
-    url ="https://books.toscrape.com/catalogue/category/books/sequential-art_5/"+ c
-    response = requests.get(url)
-    if response.ok:
-        print(f"response est de type: {type(response)}")
+  """
+    #je recupere les infos des pages
+url ="https://books.toscrape.com/catalogue/category/books/sequential-art_5/"
+response = requests.get(url)
+if response.ok:
+    print(f"response est de type: {type(response)}")
     print(response) 
     print(url)
     soup =  BeautifulSoup(response.content, 'lxml')
@@ -25,11 +29,8 @@ for h3 in tds :
     link = a['href']
 #on reconstitute le lien à link created en amont
     links.append('https://books.toscrape.com/' + link.replace("../../.." , "catalogue"))
-time.sleep(2)
-
-for url in links:
-    print(url)
-    #print(f"url est de type: {type(url)}")          
-    #with open('results_url.txt', 'w') as file:
-        #file.write(url+'\n')
-        
+    time.sleep(2)          
+    with open('results_url.txt', 'w') as file:
+        for uerl in links:
+            file.write(uerl+'\n')
+           
