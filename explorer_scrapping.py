@@ -36,12 +36,16 @@ for by_category in links_categ[1:]:
     if result.ok:
         soup = BeautifulSoup(result.content, 'lxml')
         which_category = soup.find('li', class_='active').text
-        print("The category is : " + which_category)  
+        #print("The category is : " + which_category)  
     #Extracting the links depending on if there are several pages or only one
     #if result.ok:
         #soup = BeautifulSoup(result.text, 'html.parser')
         next_page = soup.find_all('ul', class_='pager')
-        print(next_page)
+        #print(next_page)
+    #more than one result  
+        if len(next_page)>=1:
+            for page_num in next_page:
+                num_of_page_suiv = page_num
 """
     #More than one result:
         if len(next_page) >=1 :
