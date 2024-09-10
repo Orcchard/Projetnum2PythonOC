@@ -5,40 +5,39 @@ import re
 import os 
 from pathlib import Path
 import time
-# URL de la première result de la catégorie "Sequential Art"
+# URL du site  de vente en ligne books.toscrap 
 start_time = time.perf_counter()
 depart_url = "https://books.toscrape.com/"
 catalog_url = "http://books.toscrape.com/catalogue/"
-# Variable pour stocker les URLs récupérées
+# Variable  pour stocker les URLs récupérées sous forme de liste
 links_categ = []
 response = requests.get(depart_url)
 if response.ok:   
 # Parser le contenu HTML de la result
     soup =  BeautifulSoup(response.content, 'lxml')
-#print(f"soup est de type: {type(soup)}")
-#on search les elements  à inside la result 
+#print(f"soup est de type: {type(soup)}") test comprehension
+# chargement ds variable ldu resultat de find
     list_categ = soup.find('div', {'class': 'side_categories'}).find_all('li')
     for little_a in list_categ:
         a = little_a.find('a')
         linka = a['href']
-#on reconstitute le lien à link created en amont
-        links_categ.append(depart_url + linka)
-        
-#Note: the [1:] is to skip the first category that regroups ALL the books of the website
-##Remove the first row in the list
+#on reconstitute la liste des urls de toutes les categories
+        links_categ.append(depart_url + linka)    
+#Note: le [1:] permet de commencer les categories du site par la première visible dans la liste (Travel)
 for by_category in links_categ[1:]:
     result = requests.get(by_category)
-    category_sequential_art = by_category
+    all_categories = by_category
     #time.sleep(2) 
     links = []
-#Getting the type of category (will be used for the creation of the directory as well as the output CSV file)
+#Permet de retrouver plus finement chaque catégorie
     if result.ok:
         soup = BeautifulSoup(result.content, 'lxml')
         which_category = soup.find('li', class_="active").text
-        print(f"The category is : {which_category}")
-    #Extracting the links depending on if there are several pages or only one
+        #print(f"The category is : {which_category}")
+    #On recherche si le nombre de pages ets superieur à une page
     #if result.ok:
         #soup = BeautifulSoup(result.text, 'html.parser')
+        # Recherche de la page suivante
         next_page = soup.find_all('ul', class_="pager")
         #print(next_page)
     #more than one result  
@@ -47,12 +46,37 @@ for by_category in links_categ[1:]:
                 page_num_suiv = page_num.find('li' , class_="current").text
                 #print(len(page_num_suiv))
                 #print(page_num_suiv)
+                #Permet d'extraire le nombre de pages de la catégorie à partir du 10 eme caratère de la liste
                 choice = page_num_suiv.strip()[10:]
                 #print(choice)
                 choice_suiv = int(choice)+1
-                print(f"choice_suiv : {choice_suiv} alors que choice ; {choice}")
-                #print(f"This category has {choice_suiv-1} pages in total.")              
-"""
+                #print(f"choice_suiv : {choice_suiv} alors que choice : {choice}")
+                #print(f"This category has {choice_suiv-1} pages in total.")
+                #Boucle sur le nombre de pages entre 1 et dernière page + 1 et extraction de toutes les url des pages de chaque categorie
+                for i in range(1, int(choice)):
+                    url2 = all_categories.replace('index.html', '') + f"result-{str(i)}.html"
+                    page2 = requests.get(url2)
+                    print(f"page2 : {page2}")
+                    print(f"url2  : {url2}")
+                    """
+                    if page2.ok:
+                        print("result: " + str(i))
+                        soup = BeautifulSoup(page2.text, 'html.parser')
+                        book_title = soup.find_all('article', class_="product_pod")
+                        for titlelink in book_title:
+                            a = titlelink.find('a')
+                            book_link = a['href']
+                            links.append(catalog_url + book_link[9:])  
+
+
+
+
+
+
+
+
+
+
         rev_rating = soup.find("p", class_= "star-rating").get("class")[-1]
         table = soup.find('table', class_="table table-striped")
         upc= []
