@@ -31,54 +31,30 @@ for by_category in links_categ[1:]:
     category_sequential_art = by_category
     #time.sleep(2) 
     links = []
-   
 #Getting the type of category (will be used for the creation of the directory as well as the output CSV file)
     if result.ok:
         soup = BeautifulSoup(result.content, 'lxml')
-        which_category = soup.find('li', class_='active').text
-        #print("The category is : " + which_category)  
+        which_category = soup.find('li', class_="active").text
+        print(f"The category is : {which_category}")
     #Extracting the links depending on if there are several pages or only one
     #if result.ok:
         #soup = BeautifulSoup(result.text, 'html.parser')
-        next_page = soup.find_all('ul', class_='pager')
+        next_page = soup.find_all('ul', class_="pager")
         #print(next_page)
     #more than one result  
         if len(next_page)>=1:
             for page_num in next_page:
-                num_of_page_suiv = page_num
+                page_num_suiv = page_num.find('li' , class_="current").text
+                #print(len(page_num_suiv))
+                #print(page_num_suiv)
+                choice = page_num_suiv.strip()[10:]
+                #print(choice)
+                choice_suiv = int(choice)+1
+                print(f"choice_suiv : {choice_suiv} alors que choice ; {choice}")
+                #print(f"This category has {choice_suiv-1} pages in total.")              
 """
-    #More than one result:
-        if len(next_page) >=1 :
-            for num_of_pages in next_page:
-                num_of_pages2 = num_of_pages.find('li', class_="current").text
-                test = num_of_pages2.strip()[10:]
-                test2 = int(test)+1
-                print(f"This category has {test2-1} pages in total.")
-                
-                for i in range(1, test2):
-                    url2 = category_mystery.replace('index.html', '') + f"result-{str(i)}.html"
-                    page2 = requests.get(url2)
-                    print(page2)
-                    print(url2)
-                    if page2.ok:
-                        print("result: " + str(i))
-                        soup = BeautifulSoup(page2.text, 'html.parser')
-                        book_title = soup.find_all('article', class_='product_pod')
-                        for titlelink in book_title:
-                            a = titlelink.find('a')
-                            book_link = a['href']
-                            links.append(catalog_url + book_link[9:])
-
-    
-    
-    
-    
-    
-    
-    
-   
         rev_rating = soup.find("p", class_= "star-rating").get("class")[-1]
-        table = soup.find('table', class_='table table-striped')
+        table = soup.find('table', class_="table table-striped")
         upc= []
         upc_row = table.find('th', string='UPC')
 # Extraire le texte de la cellule linked
