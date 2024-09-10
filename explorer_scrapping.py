@@ -53,20 +53,22 @@ for by_category in links_categ[1:]:
                 #print(f"choice_suiv : {choice_suiv} alors que choice : {choice}")
                 #print(f"This category has {choice_suiv-1} pages in total.")
                 #Boucle sur le nombre de pages entre 1 et dernière page + 1 et extraction de toutes les url des pages de chaque categorie
-                for i in range(1, int(choice)):
-                    url2 = all_categories.replace('index.html', '') + f"result-{str(i)}.html"
-                    page2 = requests.get(url2)
-                    print(f"page2 : {page2}")
-                    print(f"url2  : {url2}")
-                    """
-                    if page2.ok:
-                        print("result: " + str(i))
-                        soup = BeautifulSoup(page2.text, 'html.parser')
+                for i in range(1, choice_suiv):
+                    url_page = all_categories.replace('index.html', '') + f"page-{str(i)}.html"
+                    page_after = requests.get(url_page)
+                    #print(f"page_after : {page_after}")
+                    #print(f"url_page  : {url_page}")
+                    
+                    if page_after.ok:
+                        #print("result: " + str(i))
+                        soup = BeautifulSoup(page_after.content, 'lxml')
                         book_title = soup.find_all('article', class_="product_pod")
                         for titlelink in book_title:
                             a = titlelink.find('a')
                             book_link = a['href']
-                            links.append(catalog_url + book_link[9:])  
+                            
+                            links.append(catalog_url + book_link[9:]+ '\n' )
+                            print(links)
 
 
 
@@ -75,7 +77,7 @@ for by_category in links_categ[1:]:
 
 
 
-
+"""
 
         rev_rating = soup.find("p", class_= "star-rating").get("class")[-1]
         table = soup.find('table', class_="table table-striped")
@@ -109,9 +111,6 @@ if table:
 # Extraire le texte de la cellule linked
     upc = upc_row.find_next_sibling('td').text
     print(upc)
-    #extraire le titre du livre
-title = soup.find('h1').text.strip()
-print(str(title))
 #récuperer l'url ou figure le livre selectionné
 #url_category= url
 #print(url_category)
@@ -152,5 +151,5 @@ data_produit = {"product_page_url" : row,
 with open('product_information.csv', 'w') as file:
         writer = csv.DictWriter(file , fieldnames=data_produit.keys())
         writer.writeheader()
-        writer.writerow(data_produit)
-        """
+        writer.writerow(data_produit)  
+"""
