@@ -60,25 +60,33 @@ for by_category in links_categ[1:]:
                     #print(f"url_page  : {url_page}")
                     
                     if page_after.ok:
-                        #print("result: " + str(i))
+                        print("result: " + str(i))
                         soup = BeautifulSoup(page_after.content, 'lxml')
                         book_title = soup.find_all('article', class_="product_pod")
                         for titlelink in book_title:
                             a = titlelink.find('a')
                             book_link = a['href']
-                            
-                            links.append(catalog_url + book_link[9:]+ '\n' )
-                            print(links)
-
-
-
-
-
-
-
-
+                            title_net = book_link.replace("../../../", "")
+                            links.append(catalog_url + title_net)
+                            for def_links in links:
+                                print(f"nombre de pages = {choice_suiv} pour url : {def_links}")
+    # s'il n'y a qu'une page?
+    
+        else:
+            url_page = all_categories
+            page_after = requests.get(url_page)  
+            #print(page_after)
+            if page_after.ok:
+               soup = BeautifulSoup(page_after.text, 'html.parser')
+               book_title = soup.findAll('article')
+               for titlelink in book_title:
+                    a = titlelink.find('a')
+                    book_link = a['href']          
+                    title_net2 = book_link.replace("../../../", "")
+                    links.append(catalog_url + title_net2)
+                    for def_links2 in links:
+                        print(f"pour url : {def_links2}")
 """
-
         rev_rating = soup.find("p", class_= "star-rating").get("class")[-1]
         table = soup.find('table', class_="table table-striped")
         upc= []
