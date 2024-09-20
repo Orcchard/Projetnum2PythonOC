@@ -8,7 +8,7 @@ import time
 
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 #extraire les information d'un livre de la rubrique Sequential Art
-links =[]
+
 url ="https://books.toscrape.com/catalogue/scott-pilgrims-precious-little-life-scott-pilgrim-1_987/index.html"
 response = requests.get(url)
 soup = BeautifulSoup(response.content, 'lxml')
@@ -40,63 +40,86 @@ if response.ok:
     print(f"product description : {product_description}")
     print(f"///////////////////////////////////////////////////////////////////////////////////////////")
     print(f" Catégorie:  {category} , Score: {review_rating}")
- 
+
 #|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 #recuperer toutes les urls de la catégorie sequential art sur 4 pages et ses elements
-#je créé une variable
-"""
-#la category sequential art a 4 pages
-for i in range(5):
-    c = (f"page-{str(i)}.html" )
-    print(c)
-    #je recupere les infos des pages
-"""
-sequential_url ="https://books.toscrape.com/catalogue/category/books/sequential-art_5/"
-response = requests.get(sequential_url)
-sequential_link = []
-if response.ok:
-    print(response) 
-    soup =  BeautifulSoup(response.content, 'lxml')
-    #bnext = soup.find_all('li', class_="next")
-    next_page = True
-    while(next_page):
-    #print(f"soup est de type: {type(soup)}")
-    #on search les elements h3 à inside la page 
-        tds = soup.find_all('h3') 
-        for h3 in tds:
-            a = h3.find('a')
-            links = a['href']
-            sequential_link.append('https://books.toscrape.com/' + links.replace("../../.." , "catalogue"))
-            for sequential_row in sequential_link:
-                print(sequential_row)
-                print("il y a un next")
-        else:
-            print("vous avez attent la dernière page")
-            next_page = False
 
+main_url = "https://books.toscrape.com/"
+catalog_url = "http://books.toscrape.com/catalogue/"
+
+
+index = requests.get(main_url)
+categories_links = []
+links=[]
+if index.ok:
+    soup = BeautifulSoup(index.text, 'html.parser')
+    category_list = soup.find('div', {'class': 'side_categories'}).find_all('li') 
+    for rech_list in category_list:
+        a = rech_list.find('a')
+        categs = a['href']
+        categories_links.append(main_url + categs)
+    for link_to_category in categories_links[4:5]:
+        page = requests.get(link_to_category)
+    if page.ok:
+        soup = BeautifulSoup(page.text, 'html.parser')
+        categ_name = soup.find('li', class_='active').text
+        print("Categorie en cours: " + categ_name)
+        
+# Trouver la page de chaque livre dans une categorie
+url = link_to_category
+bNext=True
+while bNext:
+    response = requests.get(url)
+    # Vérifier si la page existe (statut 200)
+    if response.status_code != 200:
+        break
+    # Parser le contenu de la page
+    soup = BeautifulSoup(response.text, 'html.parser')
+    book_title = soup.find_all('article', class_='product_pod')
+    for book in book_title:
+        bouquin = book.h3.a['href'] 
+        full_book_url = catalog_url + bouquin.replace('../../../', '')
+        links.append(full_book_url)
+    bouton_next = soup.find('li', class_= "next")
+    if bouton_next:
+        url_next = bouton_next.find('a')['href']
+        url = link_to_category.replace('index.html', '') + url_next
+    else:
+        print("pas de page suivante")
+        bNext = False   
+for urls in links:
+    time.sleep(1)       
+    print(urls)
+   
 #ecrire les données dans un dictionnaire
-    data_produit = {
-        "product_page_url" : url ,
-        "universal_product_code" : upc,
-        "title" : title,
-        "price_including_tax" : price_including_tax, 
-        "price_excluding_price" : price_excluding_tax, 
-        "number_available" : number_available, 
-        "product description" : product_description, 
-        "category" : category, 
-        "review_rating" : review_rating, 
-        "image_url" : image_url, }
-#écrire les data dans un fichier csv
-    with open('product_information.csv', 'w', newline='', encoding='utf-8') as file:
-            writer = csv.DictWriter(file ,fieldnames=data_produit.keys())
-            writer.writeheader()
-            for sequential_row in sequential_link:
-                writer.writerow(data_produit)
-"""
-            with open('results_url.txt', 'w') as file:
-                for uerl in sequential_links:
-                    file.write(uerl+'\n')
-                    print(f"Titre de livre:{uerl}")
-                    #ecrire les data dans un fichier csv
+data_produit = {
+    "product_page_url" : urls,
+    "universal_product_code" : upc,
+    "title" : title,
+    "price_including_tax" : price_including_tax, 
+    "price_excluding_price" : price_excluding_tax, 
+    "number_available" : number_available, 
+    "product description" : product_description, 
+    "category" : category, 
+    "review_rating" : review_rating, 
+    "image_url" : image_url
+    }
 
+#écrire les data dans un fichier csv
+with open('product_information.csv', 'w', newline='', encoding='utf-8') as file:
+    writer = csv.DictWriter(file ,fieldnames=data_produit.keys())
+    writer.writeheader()
+    for uerl in links:
+        writer.writerow(data_produit)
 """
+with open('results_url.txt', 'w') as file:
+    for uerl in links :
+        file.write(uerl+'\n')
+
+
+#je recupere les images  
+
+img_cover = bouquin.find("img")['scr']
+url_cover = "https://books.toscrape.com/" + cover.replace('../..','')
+print(url_cover) 
+""" 
