@@ -4,6 +4,13 @@ from bs4 import BeautifulSoup
 import os
 from urllib.parse import urljoin
 import re
+<<<<<<< HEAD
+=======
+import os 
+from pathlib import Path
+from urllib.parse import urljoin
+import time
+>>>>>>> 7d519ca (changt accès aux categories suite anomalie de mon code)
 
 
 main_url = "https://books.toscrape.com/"
@@ -42,6 +49,7 @@ for categ_name, link_to_category in categ_links:
         category_books_link = []
         url = link_to_category
 
+<<<<<<< HEAD
         # Créer un dossier par catégorie
         category_folder = os.path.join('Data-categorie', categ_name)
         if not os.path.exists(category_folder):
@@ -153,3 +161,81 @@ for categ_name, link_to_category in categ_links:
             writer.writerows(category_books_link)
         print(f"Fichier CSV créé pour la catégorie : {categ_name}")               
 print("Processus terminé.")
+=======
+#écrire les data dans un fichier csv
+with open('product_information.csv', 'w', newline='', encoding='utf-8') as file:
+    writer = csv.DictWriter(file ,fieldnames=data_produit.keys())
+    writer.writeheader()
+    for uerl in links:
+        writer.writerow(data_produit)
+"""
+with open('results_url.txt', 'w') as file:
+    for uerl in links :
+        file.write(uerl+'\n')#||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+#extraire les information d'un livre de la rubrique Sequential Art
+
+url =
+
+    #*****************Je recupere les url des livres de chaque categorie*******
+    #*****************Je recupere les url des livres de chaque categorie*******
+main_url = "https://books.toscrape.com/"
+catalog_url = "http://books.toscrape.com/catalogue/"
+
+index = requests.get(main_url)
+categories_links = []
+all_books_links = {}
+#links=[]
+if index.ok:
+    soup = BeautifulSoup(index.text, 'html.parser')
+    # On ignore le premier lien "Books"
+    category_list = soup.find('div', {'class': 'side_categories'}).find_all('a')[1:]  
+    for category in category_list:
+        categs = category['href'].strip()
+        full_category_url = urljoin(main_url,categs)
+        categories_links.append((category.text.strip(), full_category_url))
+    for categ_name, link_to_category in categories_links:
+        page = requests.get(link_to_category)
+        if page.ok:
+# Trouver la page de chaque livre dans une categorie
+            url = link_to_category
+            print(url)
+            #toutrs les url retourne la page de la categorie: https://books.toscrape.com/catalogue/category/books/crime_51/index.html
+            bNext=True
+            category_books_links = []
+            #print(category_books_links) est non mais pas de bug
+            while bNext:
+                try:
+                    response = requests.get(url, timeout=10)
+                    if response.status_code != 200:
+                        break
+                except requests.exceptions.RequestException as e:
+                    print(f"Erreur lors de la récupération de {url}: {e}")
+                break
+            print("je suis là")
+           
+            soup = BeautifulSoup(response.text, 'html.parser')
+            book_title = soup.find_all('article', class_='product_pod')
+            for book in book_title:
+                bouquin = book.h3.a['href']
+                full_book_url = urljoin(catalog_url, bouquin.replace('../../../', ''))
+                category_books_links.append(full_book_url)
+                print("je suis toujours et encore là")
+            # Vérifier s'il y a une page suivante
+            bouton_next = soup.find('li', class_='next')
+            if bouton_next:
+                print(bouton_next)
+                url_next = bouton_next.find('a')['href']
+                url = urljoin(link_to_category, url_next)
+            else:
+                #print(f"Pas de page suivante pour la catégorie : {categ_name}")
+                bNext = False
+        # Ajouter les livres de la catégorie courante à la liste générale (catégorie -> URLs)
+            if category_books_links:
+                all_books_links[categ_name] = category_books_links
+# Étape 3 : Afficher les résultats
+for category, book_links in all_books_links.items():
+    print(f"\nCatégorie: {category}")
+    for url in book_links:
+        time.sleep(1)
+        print(url)
+>>>>>>> 7d519ca (changt accès aux categories suite anomalie de mon code)
