@@ -86,9 +86,7 @@ while bNext:
 for urls in links:
     time.sleep(1)       
     print(urls)
-    """
-    
-    
+    """   
 
 
 # print("*****************Je recupere les url des livres de chaque categorie******************")
