@@ -90,6 +90,7 @@ for urls in links:
     
     
 
+
 # print("*****************Je recupere les url des livres de chaque categorie******************")
 main_url = "https://books.toscrape.com/"
 catalog_url = "http://books.toscrape.com/catalogue/"
@@ -142,7 +143,7 @@ for categ_name, link_to_category in categ_links:
                 page_book = requests.get(full_book_url)
                 if page_book.ok:
                     page_book_soup = BeautifulSoup(page_book.text, 'html.parser')
-                    # Definition des elements
+                    # Definition des élements
                     product_page_url = full_book_url
                     product_table = page_book_soup.find("table", class_="table table-striped")
                     upc = product_table.find("th", string="UPC").find_next_sibling("td").text 
@@ -162,29 +163,28 @@ for categ_name, link_to_category in categ_links:
                     else: 
                         rating = "N/A"
                 #Ajout des informations du livre dans dictionnaire
-                data_produit = {
-                    "Product_page_url": product_page_url,
-                    "Universal_product_code": upc,
-                    "Titre": title,
-                    "Price_including_tax": price_including_tax,
-                    "Price_excluding_price": price_excluding_tax,
-                    "Number_available": number_available,
-                    "Product description": product_description,
-                    "Category": category,
-                    "Review_rating": rating,
-                    "Image_url": image_url,
-                }
-                category_books_l.append(data_produit)
+                    data_produit = {
+                        "Product_page_url": product_page_url,
+                        "Universal_product_code": upc,
+                        "Titre": title,
+                        "Price_including_tax": price_including_tax,
+                        "Price_excluding_price": price_excluding_tax,
+                        "Number_available": number_available,
+                        "Product description": product_description,
+                        "Category": category,
+                        "Image_url": image_url,
+                    }
+                    category_books_l.append(data_produit)
             # Vérifier s'il y a une page suivante
-            bouton_next = soup.find("li", class_="next")
-            if bouton_next:
-                url_next = bouton_next.find("a")["href"]
-                url = urljoin(link_to_category, url_next)
-            else:
-                b_next = False
+                bouton_next = soup.find("li", class_="next")
+                if bouton_next:
+                    url_next = bouton_next.find("a")["href"]
+                    url = urljoin(link_to_category, url_next)
+                else:
+                    b_next = False
      #liste introduite dans le dictionnaire
-        if category_books_l:
-            a_books_dict[categ_name] = category_books_l
+            if category_books_l:
+                a_books_dict[categ_name] = category_books_l
     # Sauvegarder les livres dans un fichier CSV pour chaque catégorie
 for categ_name, books in a_books_dict.items():       
     csv_file = f"csv_categories/{categ_name}.csv"
@@ -196,9 +196,3 @@ for categ_name, books in a_books_dict.items():
         writer.writerows(books)
     print(f"Fichier CSV créé pour la catégorie : {categ_name}")
 print("Processus terminé.")
-"""
-for urls in full_book_url:
-    time.sleep(1)
-    print(f"Nom de la catégorie : {categ_name}")
-    print(f"url du livre : {urls}")
-"""
