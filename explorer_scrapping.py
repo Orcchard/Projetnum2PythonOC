@@ -7,88 +7,8 @@ from pathlib import Path
 from urllib.parse import urljoin
 import time 
 
-# ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-print ("extraire les information d'un livre de la rubrique Sequential Art")
-print("Titre du livre :  Scott Pilgrim's Precious Little Life")
-url = "https://books.toscrape.com/catalogue/scott-pilgrims-precious-little-life-scott-pilgrim-1_987/index.html"
-response = requests.get(url)
-soup = BeautifulSoup(response.content, "html.parser")
-if response.ok:
-    product_page_url = url
-    product_information = soup.find_all("td")
-    p = soup.find_all("p")
-    title = soup.find("h1").text
-    p_all = soup.find_all("p")
-    upc = product_information[0].text
-    title = soup.find("h1").text
-    price_including_tax = product_information[2].text
-    price_excluding_tax = product_information[3].text
-    prod_avail = product_information[5].text
-    number_available = prod_avail.replace(" (", " ").replace(")", "")
-    product_description = (soup.find("div", {"id": "product_description"}).find_next("p").text)
-    category = soup.find_all("a")[3].text
-    review_rating = f"{p[2]['class'][-1]} stars"
-    picture_url = soup.find("img")["src"]
-    image_url = "https://books.toscrape.com/" + picture_url.replace("../../", "")
-    
-    print(f"///////////// LIVRE : {title}//////////////////////////// ")
-    print(f"URL: {url}")
-    print(f"UPC:{upc} , Catégorie: {category} ,Titre: {title}")
-    print(f"Prix TTC: {price_including_tax}  , Prix HT:{price_excluding_tax} , Reste en stock : {number_available}")
-    print(f" Catégorie:  {category} , Score: {review_rating}")
-    print(f"Réference de l'image:{image_url}")
-    print(f"product description : {product_description}")
-    print(f"///////////////////////////////////////////////////////////////////////////////////////////")
-    print(f" Catégorie:  {category} , Score: {review_rating}")
-    
 
-        
-# |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-# recuperer toutes les urls de la catégorie sequential art sur 4 pages et ses eléments
-main_url = "https://books.toscrape.com/"
-catalog_url = "http://books.toscrape.com/catalogue/"
-index = requests.get(main_url)
-categories_links = []
-if index.ok:
-    soup = BeautifulSoup(index.text, "html.parser")
-    category_list = soup.find("div", {"class": "side_categories"}).find_all("li")
-    for rech_list in category_list:
-        a = rech_list.find("a")
-        categs = a["href"]
-        categories_links.append(main_url + categs)
-links = []
-link_to_category = categories_links[4]
-page = requests.get(link_to_category)    
-# Trouver la page de chaque livre dans une categorie
-url = link_to_category
-bNext = True
-while bNext:
-    response = requests.get(url)
-    # Vérifier si la page existe (statut 200) si non on stop le programme
-    if response.status_code != 200:
-        break
-    # Parser le contenu de la page
-    soup = BeautifulSoup(response.text, "html.parser")
-    book_title = soup.find_all("article", class_="product_pod")
-    for book in book_title:
-        bouquin = book.h3.a["href"]
-        full_book_url = catalog_url + bouquin.replace("../../../", "")
-        links.append(full_book_url)
-        #Existe t'il une page suivante pour les catégories scrappées?
-    bouton_next = soup.find("li", class_="next")
-    if bouton_next:
-        url_next = bouton_next.find("a")["href"]
-        url = link_to_category.replace("index.html", "") + url_next
-    else:
-        bNext = False
     #Boucle pour extraire les données de chaque livre
-    """
-for urls in links:
-    time.sleep(1)       
-    print(urls)
-    """   
-
-
 # print("*****************Je recupere les url des livres de chaque categorie******************")
 main_url = "https://books.toscrape.com/"
 catalog_url = "http://books.toscrape.com/catalogue/"
@@ -97,8 +17,7 @@ answer = requests.get(main_url)
 categ_links = []
 # Le dictionnaire a_books_dict stockera les liens des livres associés à chaque catégorie.
 a_books_dict = {}
-if not os.path.exists('csv_categories'):
-    os.makedirs('csv_categories')
+
 if answer.ok:
     # Extraction du contenu et transformation en liste grace à BeautifulSoup
     soup = BeautifulSoup(answer.text, "html.parser")
@@ -112,6 +31,8 @@ if answer.ok:
 for categ_name, link_to_category in categ_links:
     page = requests.get(link_to_category)
     if page.ok:
+        print("La catégories est : " + categ_name)
+        #print(f"URL du livre :{full_book_url}")
         # Trouver l'url de chaque livre pour chaque categorie
         url = link_to_category
         # toutes les url retourne la page de la categorie: https://books.toscrape.com/catalogue/category/books/crime_51/index.html
@@ -127,7 +48,7 @@ for categ_name, link_to_category in categ_links:
             except requests.exceptions.RequestException as e:
                 print(f"Erreur lors de la récupération de {url}: {e}")
                 break
-            # recuperation des titres de la page et de son
+            # recuperation des titres de la page et de son URL
             soup = BeautifulSoup(response.text, "html.parser")
             book_title = soup.find_all("article", class_="product_pod")
             for book in book_title:
@@ -137,10 +58,11 @@ for categ_name, link_to_category in categ_links:
                 image_cover =book.find("img")
                 image_url = urljoin(main_url, image_cover["src"])
         #Affichage à l'écran de la catégorie de l'URL du livre
-        #Requests sur l'URL de chaque page de livre
+        #Requests sur l'URL de chaque page de livre 
                 page_book = requests.get(full_book_url)
                 if page_book.ok:
                     page_book_soup = BeautifulSoup(page_book.text, 'html.parser')
+                    print(f"URL du livre :{full_book_url}")
                     # Definition des élements
                     product_page_url = full_book_url
                     product_table = page_book_soup.find("table", class_="table table-striped")
@@ -180,11 +102,12 @@ for categ_name, link_to_category in categ_links:
                     url = urljoin(link_to_category, url_next)
                 else:
                     b_next = False
+                
      #liste introduite dans le dictionnaire
             if category_books_l:
                 a_books_dict[categ_name] = category_books_l
     # Sauvegarder les livres dans un fichier CSV pour chaque catégorie
-for categ_name, books in a_books_dict.items():       
+for categ_name, books in a_books_dict.items():      
     csv_file = f"csv_categories/{categ_name}.csv"
     with open(csv_file, mode='w', newline='', encoding='utf-8') as file:
         fieldnames = ["Product_page_url", "Universal_product_code", "Titre", "Price_including_tax", "Price_excluding_price", "Number_available", "Product description", "Category", "Review_rating", "Image_url"]
