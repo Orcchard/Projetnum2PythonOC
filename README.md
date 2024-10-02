@@ -1,14 +1,17 @@
 Book Scraper - Books to Scrape
 Description
-Ce programme est un scraper web qui extrait les informations des livres à partir du site Books to Scrape. Pour chaque catégorie de livres, il collecte les détails suivants :
+Ce programme est un scraper web qui extrait les informations des livres à partir du site Books to Scrape. Pour chaque catégorie de livres, il permet d'extraire les informationssuivantes pour chacun :
 
-Titre
+Titre 
 URL du livre
-URL de la couverture
+URL de la couverturePrix incluant la taxe
+Category (du livre)
 Description du produit
-UPC (Identifiant unique du produit)
+UPC (Code unique identifiant le produit)
 Prix incluant la taxe
-Les informations de chaque catégorie sont ensuite enregistrées dans des fichiers CSV séparés, placés dans un dossier csv_categories.
+Prix excluant la taxe
+Number available (Nombre en stock
+Review_rating (Note attribuée pour chaque livre
 
 Fonctionnalités
 
@@ -22,31 +25,34 @@ Avant d'exécuter ce programme, vous devez installer les bibliothèques Python s
 
 requests : pour envoyer des requêtes HTTP au site.
 BeautifulSoup (à travers bs4) : pour parser le HTML et extraire les données.
-csv
-re
-os
+csv : Permet de créer modifier lire fichiers csv
+os : Permet decréer, manipuler des repertoires
 pathlib  Path
 urljoin
 time 
 Bibliothèques installées en utilisant pip :
 pip install requests
 pip install beautifulsoup4
-cd book-scraper
+
 Exécutez le script Python : Assurez-vous que vous avez Python installé, puis exécutez le script :
 
 explorer_scrapping.py
-Vérifiez les résultats : Après l'exécution, un dossier csv_categories sera créé dans le répertoire du projet. Ce dossier contiendra un fichier CSV pour chaque catégorie de livres. Chaque fichier CSV inclura les informations détaillées pour les livres de la catégorie correspondante.
-Structure du Projet
-Exemple de Sortie CSV
+Vérifiez les résultats : Après l'exécution, un dossier categories sera créé dans le répertoire du projet. Ce dossier contiendra un fichier CSV pour chaque catégorie de livres. Chaque fichier CSV inclura les informations détaillées pour les livres de la catégorie correspondante.
+Ce dossier contiendra également un sous dossier couverture_livre Les couvertures des livres sont enregistrés en format JPEG sa catégorie.
+
 
 Chaque fichier CSV aura le format suivant :
-
 Titre URL du livre  URL de la couverture Description du produit UPC Prix incluant la taxe
-Améliorations Futures
+"Product_page_url
+"Universal_product_code
+"Titre
+"Price_including_tax
+"Price_excluding_price"
+"Number_available
+"Category
+"Review_rating
+"Image_url
+"Product description
 
-Ajouter la possibilité de scraper uniquement une ou plusieurs catégories spécifiques.
-Optimiser la gestion des erreurs et des interruptions réseau.
-Enrichir les données avec des informations supplémentaires (ex. : disponibilité des stocks, évaluations des livres).
-Licence
 
 
