@@ -19,8 +19,12 @@ Bibliothèques installées en utilisant pip install
   pathlib  Path
   urljoin
   time
-- création de l'environnement virtuel env; Sous windows 11 dans l'editeur Viual studio code : Intruction:python -m venv env
-- l'activer : env/scripts/activate
+- création de l'environnement virtuel env Sous windows 11 dans l'editeur Viual studio code grace à la commande :python -m venv env
+- comment l'activer :
+   la commande sera "source env/bin/activate" si vous etes sous Linux ou Apple
+   la commande sera env\Scripts\activate.bat si vous êtes sous Windows
+   la commande sera  env\Scripts\activate si vous utilisez PowerShell
+  
 
 Exécutez le script Python "explorer_scraping.py"
 Vérifiez les résultats : 
