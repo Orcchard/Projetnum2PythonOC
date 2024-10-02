@@ -3,9 +3,8 @@ import csv
 from bs4 import BeautifulSoup
 import re
 import os
-from pathlib import Path
 from urllib.parse import urljoin
-import time 
+
 
 
     #Boucle pour extraire les données de chaque livre
@@ -17,7 +16,11 @@ answer = requests.get(main_url)
 categ_links = []
 # Le dictionnaire a_books_dict stockera les liens des livres associés à chaque catégorie.
 a_books_dict = {}
+def clean_text(text):
+    if isinstance(text, str):
+        return text.replace('Â', '')  # Remplacer le caractère 'Â'
 
+    return text
 if answer.ok:
     # Extraction du contenu et transformation en liste grace à BeautifulSoup
     soup = BeautifulSoup(answer.text, "html.parser")
@@ -28,16 +31,31 @@ if answer.ok:
         # Je joins url relative et absolue
         full_category_url = urljoin(main_url, categs)
         categ_links.append((category.text.strip(), full_category_url))
+    #Je cree le fichier Categories qui contiendra l'extraction du fichier .csv par nom de catégorie
+if not os.path.exists('categories'):
+    os.makedirs('categories')
+#Impression à l'écran du nom de la catégorie
 for categ_name, link_to_category in categ_links:
     page = requests.get(link_to_category)
     if page.ok:
+        print("**********************************************************")
         print("La catégories est : " + categ_name)
-        #print(f"URL du livre :{full_book_url}")
-        # Trouver l'url de chaque livre pour chaque categorie
+        print("**********************************************************")
         url = link_to_category
-        # toutes les url retourne la page de la categorie: https://books.toscrape.com/catalogue/category/books/crime_51/index.html
         b_next = True
         category_books_l = []
+#Je nomme un sous dossier du nom de la catégorie pour chaque url de livre
+        category_folder = os.path.join('categories', categ_name)
+        if not os.path.exists(category_folder):
+            os.makedirs(category_folder)
+            
+    # Je nomme un sous-dossier "couverture-livre" pour les images
+        cover_folder = os.path.join(category_folder, 'couverture-livre')
+        if not os.path.exists(cover_folder):
+            os.makedirs(cover_folder)
+
+
+
         # Creation d'une boucle while
         while b_next:
             # Tentative d'intercepter une exeption
@@ -57,8 +75,18 @@ for categ_name, link_to_category in categ_links:
         #Récuperation de l'URL de la couverture
                 image_cover =book.find("img")
                 image_url = urljoin(main_url, image_cover["src"])
-        #Affichage à l'écran de la catégorie de l'URL du livre
-        #Requests sur l'URL de chaque page de livre 
+#Telechargement de l'image
+                image_name = image_url.split("/")[-1]
+                image_path = os.path.join(cover_folder, image_name)
+                try:
+                    img_data = requests.get(image_url).content
+                    with open(image_path, 'wb') as handler:
+                        handler.write(img_data)
+                except Exception as e:
+                    print(f"Erreur lors du téléchargement de l'image {image_url}: {e}")
+# Ajout des informations de chaque livre
+#Affichage à l'écran de la catégorie de l'URL du livre
+#Requests sur l'URL de chaque page de livre 
                 page_book = requests.get(full_book_url)
                 if page_book.ok:
                     page_book_soup = BeautifulSoup(page_book.text, 'html.parser')
@@ -72,10 +100,10 @@ for categ_name, link_to_category in categ_links:
                     price_excluding_tax = page_book_soup.find('th', string='Price (excl. tax)').find_next_sibling("td").text
                     prod_avail = page_book_soup.find('th', string="Availability").find_next_sibling("td").text 
                     number_available = prod_avail.replace(" (", " ").replace(")", "")
-                    product_description = page_book_soup.find('meta', {'name':'description'})['content'].strip()
                     category = categ_name
                     rating_element = page_book_soup.find("p", class_="star-rating")
-                    if rating_element: 
+                    product_description = page_book_soup.find('meta', {'name':'description'})['content'].strip()
+                    if rating_element:
                 # Extraire la classe qui indique le nombre d'étoiles (par exemple "One", "Two", etc.) 
                         rating_class = rating_element["class"] 
                         rating = rating_class[1]  
@@ -90,9 +118,10 @@ for categ_name, link_to_category in categ_links:
                         "Price_including_tax": price_including_tax,
                         "Price_excluding_price": price_excluding_tax,
                         "Number_available": number_available,
-                        "Product description": product_description,
                         "Category": category,
+                        "Review_rating": rating, 
                         "Image_url": image_url,
+                        "Product description": product_description,
                     }
                     category_books_l.append(data_produit)
             # Vérifier s'il y a une page suivante
@@ -108,9 +137,14 @@ for categ_name, link_to_category in categ_links:
                 a_books_dict[categ_name] = category_books_l
     # Sauvegarder les livres dans un fichier CSV pour chaque catégorie
 for categ_name, books in a_books_dict.items():      
-    csv_file = f"csv_categories/{categ_name}.csv"
-    with open(csv_file, mode='w', newline='', encoding='utf-8') as file:
-        fieldnames = ["Product_page_url", "Universal_product_code", "Titre", "Price_including_tax", "Price_excluding_price", "Number_available", "Product description", "Category", "Review_rating", "Image_url"]
+    #csv_file = f"csv_categories/{categ_name}.csv"
+    categ_folder = os.path.join('categories',categ_name)
+    csv_file = os.path.join(categ_folder, f"{categ_name}.csv")
+    for book in books:
+        book['Price_including_tax'] = clean_text(book.get('Price_including_tax', ''))
+        book['Price_excluding_price'] = clean_text(book.get('Price_excluding_price', ''))
+    with open(csv_file, mode='w', newline='', encoding='utf-8_sig') as file:
+        fieldnames = ["Product_page_url", "Universal_product_code", "Titre", "Price_including_tax", "Price_excluding_price", "Number_available", "Category", "Review_rating", "Image_url", "Product description"]
     #ecriture des noms des colonnes            
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
