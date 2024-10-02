@@ -34,25 +34,27 @@ Bibliothèques installées en utilisant pip :
 pip install requests
 pip install beautifulsoup4
 
+
+
 Exécutez le script Python : Assurez-vous que vous avez Python installé, puis exécutez le script :
 
 explorer_scrapping.py
 Vérifiez les résultats : Après l'exécution, un dossier categories sera créé dans le répertoire du projet. Ce dossier contiendra un fichier CSV pour chaque catégorie de livres. Chaque fichier CSV inclura les informations détaillées pour les livres de la catégorie correspondante.
-Ce dossier contiendra également un sous dossier couverture_livre Les couvertures des livres sont enregistrés en format JPEG sa catégorie.
-
+Ce dossier contiendra également un sous dossier couverture_livre Les couvertures des livres sont enregistrés en format JPEG pour sa catégorie.
 
 Chaque fichier CSV aura le format suivant :
 Titre URL du livre  URL de la couverture Description du produit UPC Prix incluant la taxe
-"Product_page_url
-"Universal_product_code
-"Titre
-"Price_including_tax
-"Price_excluding_price"
-"Number_available
-"Category
-"Review_rating
-"Image_url
-"Product description
+Product_page_url
+Universal_product_code
+Titre
+Price_including_tax
+Price_excluding_price
+Number_available
+Category
+Review_rating
+Image_url
+Product description
+
 
 
 
