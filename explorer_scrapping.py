@@ -1,7 +1,6 @@
 import requests
 import csv
 from bs4 import BeautifulSoup
-import re
 import os
 from urllib.parse import urljoin
 
@@ -31,9 +30,9 @@ if answer.ok:
         # Je joins url relative et absolue
         full_category_url = urljoin(main_url, categs)
         categ_links.append((category.text.strip(), full_category_url))
-    #Je cree le fichier Categories qui contiendra l'extraction du fichier .csv par nom de catégorie
-if not os.path.exists('categories'):
-    os.makedirs('categories')
+    #Je cree le fichier Categorie qui contiendra l'extraction du fichier .csv par nom de catégorie
+if not os.path.exists('categorie'):
+    os.makedirs('categorie')
 #Impression à l'écran du nom de la catégorie
 for categ_name, link_to_category in categ_links:
     page = requests.get(link_to_category)
@@ -45,7 +44,7 @@ for categ_name, link_to_category in categ_links:
         b_next = True
         category_books_l = []
 #Je nomme un sous dossier du nom de la catégorie pour chaque url de livre
-        category_folder = os.path.join('categories', categ_name)
+        category_folder = os.path.join('categorie', categ_name)
         if not os.path.exists(category_folder):
             os.makedirs(category_folder)
             
@@ -137,8 +136,8 @@ for categ_name, link_to_category in categ_links:
                 a_books_dict[categ_name] = category_books_l
     # Sauvegarder les livres dans un fichier CSV pour chaque catégorie
 for categ_name, books in a_books_dict.items():      
-    #csv_file = f"csv_categories/{categ_name}.csv"
-    categ_folder = os.path.join('categories',categ_name)
+    #csv_file = f"csv_categorie/{categ_name}.csv"
+    categ_folder = os.path.join('categorie',categ_name)
     csv_file = os.path.join(categ_folder, f"{categ_name}.csv")
     for book in books:
         book['Price_including_tax'] = clean_text(book.get('Price_including_tax', ''))
