@@ -28,12 +28,11 @@ Prérequis
   
   urljoin
   
-  time
 
   
-- création de l'environnement virtuel env à la commande :  python -m venv env
+- Création de l'environnement virtuel env à la commande :  python -m venv env
   
-- comment l'activer :
+- Comment l'activer :
    la commande sera "source env/bin/activate" si vous etes sous Linux ou Apple
   
    la commande sera env\Scripts\activate.bat si vous êtes sous Windows
@@ -43,11 +42,11 @@ Prérequis
   
 Exécutez le script Python "explorer_scraping.py"
 Vérifiez les résultats : 
-Après l'exécution, si le programme fonctionne un dossier categories sera créé dans le répertoire du projet. 
+Après l'exécution, si le programme fonctionne un dossier categorie sera créé dans le répertoire du projet. 
 Ce dossier contiendra un fichier CSV pour chaque catégorie de livres. Chaque fichier CSV inclura les informations détaillées pour les livres de la catégorie correspondante.
-Ce dossier contiendra également un sous dossier couverture_livre Les couvertures des livres sont enregistrés en format JPEG pour sa catégorie.
+Ce dossier contiendra également un sous dossier couverture_livre.Les couvertures des livres y sont enregistrées en format JPEG par nom de catégorie.
 
-Chaque fichier CSV aura le format suivant :
+Chaque fichier CSV aura le format suivant  :
 Product_page_url : l'URL du livre
 
 Universal_product_code : Code unique identifiant le produit
