@@ -12,6 +12,7 @@ Il enregistre les résultats des extractions  sous forme de fichiers CSV, un fic
 Il affiche à l'écran en temps réel les catégories et les URL des livres en cours d'extraction.
 
 Prérequis
+
 -Vous devez installer l'application Python sur votre machine (Ce programme est developpé sous windows 11 avec la version Python 3.12)
 -Avant d'exécuter ce programme, vous devez installer les bibliothèques Python suivantes :
   Bibliothèques installées en utilisant pip install
