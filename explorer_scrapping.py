@@ -3,6 +3,7 @@ import csv
 from bs4 import BeautifulSoup
 import os
 from urllib.parse import urljoin
+from word2number import w2n
 
 
 
@@ -18,16 +19,15 @@ a_books_dict = {}
 def clean_text(text):
     if isinstance(text, str):
         return text.replace('Â', '')  # Remplacer le caractère 'Â'
-
     return text
 if answer.ok:
     # Extraction du contenu et transformation en liste grace à BeautifulSoup
     soup = BeautifulSoup(answer.text, "html.parser")
-    # On ignore le premier lien "Books" pour y parvenir j'extrais à partir d'une tranche de ma liste
+    # On ignore le premier lien "Books" pour y parvenir j'extrais à partir de la catégorie travel
     categ_list = soup.find("div", {"class": "side_categories"}).find_all("a")[1:]
     for category in categ_list:
         categs = category["href"].strip()
-        # Je joins url relative et absolue
+    # Je joins url relative et absolue
         full_category_url = urljoin(main_url, categs)
         categ_links.append((category.text.strip(), full_category_url))
     #Je cree le fichier Categorie qui contiendra l'extraction du fichier .csv par nom de catégorie
@@ -43,7 +43,7 @@ for categ_name, link_to_category in categ_links:
         url = link_to_category
         b_next = True
         category_books_l = []
-#Je nomme un sous dossier du nom de la catégorie pour chaque url de livre
+#Je nomme un fichier du nom de la catégorie 
         category_folder = os.path.join('categorie', categ_name)
         if not os.path.exists(category_folder):
             os.makedirs(category_folder)
@@ -52,9 +52,6 @@ for categ_name, link_to_category in categ_links:
         cover_folder = os.path.join(category_folder, 'couverture-livre')
         if not os.path.exists(cover_folder):
             os.makedirs(cover_folder)
-
-
-
         # Creation d'une boucle while
         while b_next:
             # Tentative d'intercepter une exeption
@@ -98,15 +95,16 @@ for categ_name, link_to_category in categ_links:
                     price_including_tax = page_book_soup.find('th', string='Price (incl. tax)').find_next_sibling("td").text 
                     price_excluding_tax = page_book_soup.find('th', string='Price (excl. tax)').find_next_sibling("td").text
                     prod_avail = page_book_soup.find('th', string="Availability").find_next_sibling("td").text 
-                    number_available = prod_avail.replace(" (", " ").replace(")", "")
+                    #number_available = prod_avail.replace(" (", " ").replace(")", "")
+                    number_available = prod_avail.replace("In stock (", "").replace(" available)", "")
                     category = categ_name
                     rating_element = page_book_soup.find("p", class_="star-rating")
                     product_description = page_book_soup.find('meta', {'name':'description'})['content'].strip()
                     if rating_element:
-                # Extraire la classe qui indique le nombre d'étoiles (par exemple "One", "Two", etc.) 
+                # Extraire la classe qui indique le nombre d'étoiles (par exemple "One", "Two", etc.) et la traduire en numérique
                         rating_class = rating_element["class"] 
-                        rating = rating_class[1]  
-                        # La deuxième classe correspond à la note 
+                        rating = w2n.word_to_num(rating_class[1])
+                        
                     else: 
                         rating = "N/A"
                 #Ajout des informations du livre dans dictionnaire
