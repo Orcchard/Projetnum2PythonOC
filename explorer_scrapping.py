@@ -37,8 +37,9 @@ if not os.path.exists('categorie'):
 for categ_name, link_to_category in categ_links:
     page = requests.get(link_to_category)
     if page.ok:
+        soup = BeautifulSoup(page.text, 'html.parser')
         print("**********************************************************")
-        print("La catégories est : " + categ_name)
+        print(f" La catégories est : {categ_name}")
         print("**********************************************************")
         url = link_to_category
         b_next = True
@@ -52,6 +53,10 @@ for categ_name, link_to_category in categ_links:
         cover_folder = os.path.join(category_folder, 'couverture-livre')
         if not os.path.exists(cover_folder):
             os.makedirs(cover_folder)
+    number_books = soup.select_one("form", {"class": "form-horizontal"}).find("strong")
+    if number_books:
+        number_of_books = int(number_books.text.strip())
+        print(f"Le nombre de livre(s) est {number_of_books}")
         # Creation d'une boucle while
         while b_next:
             # Tentative d'intercepter une exeption
