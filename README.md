@@ -22,6 +22,7 @@ Ce programme est un scraper web qui extrait les informations des livres à parti
 - Path pathlib: permet de créer des chemins d'accès, identifier des fichiers
 - urljoin : utile pour construire des liens entre url de base et un chemin partiel
 - word2num: permet la conversion de chiffres format texte en format numérique
+- re : permet de remplacer les caracteres non valides 
 
 ### Créez l'environnement virtuel env grace à la commande : python -m venv env
 ### Comment l'activer :
