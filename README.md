@@ -5,7 +5,7 @@
 Ce programme est un scraper web qui extrait les informations des livres à partir du site Books to Scrape. Pour chaque catégorie de livres, il permet d'extraire des données detaillées plus bas dans le texte.
 
 # Fonctionnalités
-- Le programme Scrape toutes les catégories de livres du site Books to Scrape
+- Le programme scrape toutes les catégories de livres du site Books to Scrape
 - Il récupère des informations détaillées de chaque livre
 - Il enregistre les résultats des extractions  sous forme de fichiers CSV, un fichier par catégorie
 - Il affiche à l'écran en temps réel les catégories et les URL des livres en cours d'extraction
