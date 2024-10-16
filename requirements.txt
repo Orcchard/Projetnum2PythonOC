@@ -7,5 +7,5 @@ python-dateutil==2.9.0.post0
 requests==2.32.3
 urljoin==1.0.0
 urllib3==2.2.3
-word2number==1.1
+
 
