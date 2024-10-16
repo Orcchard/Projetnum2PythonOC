@@ -7,7 +7,8 @@ Ce programme est un scraper web qui extrait les informations des livres à parti
 # Fonctionnalités
 - Le programme scrape toutes les catégories de livres du site Books to Scrape
 - Il récupère des informations détaillées de chaque livre
-- Il enregistre les résultats des extractions  sous forme de fichiers CSV, un fichier par catégorie
+- Il enregistre les résultats des extractions sous forme de fichiers CSV, un fichier par catégorie
+- Il enregistre les couvertures de livrespar catégorie en format jpeg dans un sous dossier couverture_livre
 - Il affiche à l'écran en temps réel les catégories et les URL des livres en cours d'extraction
 
 # Prérequis
@@ -21,7 +22,6 @@ Ce programme est un scraper web qui extrait les informations des livres à parti
 - os : permet de créer, manipuler des repertoires
 - Path pathlib: permet de créer des chemins d'accès, identifier des fichiers
 - urljoin : utile pour construire des liens entre url de base et un chemin partiel
-- word2num: permet la conversion de chiffres format texte en format numérique
 - re : permet de remplacer les caracteres non valides 
 
 ### Créez l'environnement virtuel env grace à la commande : python -m venv env
@@ -36,10 +36,10 @@ Ce programme est un scraper web qui extrait les informations des livres à parti
 - Exécutez le script "python explorer_scraping.py"
 - Vérifiez les résultats : 
 
-### Après l'exécution, si le programme fonctionne un dossier nommé categorie sera créé dans le répertoire du projet. 
+### Après l'exécution, si le programme fonctionne un dossier nommé Data_categorie sera créé dans le répertoire du projet. 
 - Ce dossier contiendra un fichier CSV pour chaque catégorie de livres.
 - Chaque fichier CSV inclura les informations détaillées pour les livres de la catégorie correspondante.
-- Ce dossier contiendra également un sous dossier couverture_livre. Les couvertures des livres y sont enregistrées en format JPEG par nom de catégorie.
+- Ce dossier contiendra également un sous dossier couverture_livre. La couverture de chaque livre de la catégorie y     est enregistrée en format JPEG.
 
 ## Chaque fichier CSV au nom de la catégorie du livre aura le format suivant  :
 - Product_page_url : l'URL du livre
