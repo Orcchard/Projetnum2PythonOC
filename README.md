@@ -13,16 +13,6 @@ Ce programme est un scraper web qui extrait les informations des livres à parti
 
 # Prérequis
 - Vous devez installer l'application Python sur votre machine (Ce programme est developpé sous windows 11 avec la version Python 3.12)
-  
-## Avant d'exécuter ce programme, installez les bibliothèques Python suivantes : à l'aide pip install
-
-- requests : pour envoyer des requêtes HTTP au site.
-- BeautifulSoup (à travers bs4) : pour parser le HTML et extraire les données.
-- csv : permet de créer modifier lire fichiers csv
-- os : permet de créer, manipuler des repertoires
-- Path pathlib: permet de créer des chemins d'accès, identifier des fichiers
-- urljoin : utile pour construire des liens entre url de base et un chemin partiel
-- re : permet de remplacer les caracteres non valides 
 
 ### Créez l'environnement virtuel env grace à la commande : python -m venv env
 ### Comment l'activer :
@@ -31,6 +21,15 @@ Ce programme est un scraper web qui extrait les informations des livres à parti
 - la commande sera env\Scripts\activate.bat si vous êtes sous Windows
 
 - la commande sera  env\Scripts\activate si vous utilisez PowerShell
+
+## Avant d'exécuter ce programme, installez les bibliothèques 
+A l'aide du fichier requirement pip install requirement
+Se placer dans le dossier où l'on a extrait l'ensemble des documents grâce à la commande cd
+
+Dans le terminal de commande, executer la commande suivante :
+python3 -m venv env
+Activez l'environnement virtuel
+source env/bin/activate
 
 ## Comment executer le programme
 - Exécutez le script "python explorer_scraping.py"

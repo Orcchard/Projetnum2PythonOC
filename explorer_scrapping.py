@@ -103,7 +103,7 @@ for categ_name, link_to_category in categ_links:
                         for lettre, val_num in rating_tuple:
                             if rating_class == lettre:
                                 rating = val_num
-                                break
+                                
                         print(f"Le nom du livre extrait: {title}")
                         #Récuperation de l'URL de la couverture DU LIVRE
                         image_cover =book.find("img")
