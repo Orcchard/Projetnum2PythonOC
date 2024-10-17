@@ -1,9 +1,6 @@
 beautifulsoup4==4.12.3
 bs4==0.0.2
-matplotlib==3.9.2
-numpy==1.26.4
 pylance==0.14.1
-python-dateutil==2.9.0.post0
 requests==2.32.3
 urljoin==1.0.0
 urllib3==2.2.3
