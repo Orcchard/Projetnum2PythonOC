@@ -3,7 +3,6 @@ import csv
 from bs4 import BeautifulSoup
 import os
 from urllib.parse import urljoin
-from word2number import w2n
 import re
 
 
