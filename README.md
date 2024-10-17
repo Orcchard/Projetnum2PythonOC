@@ -2,19 +2,22 @@
 
 # Description
 
-Ce programme est un scraper web qui extrait les informations des livres à partir du site Books to Scrape. Pour chaque catégorie de livres, il permet d'extraire des données detaillées plus bas dans le texte.
+Ce programme est un scraper web qui extrait les informations des livres à partir du site Books to Scrape. Pour chaque catégorie de livres, il permet d'extraire des données détaillées plus bas dans le texte.
 
 # Fonctionnalités
 - Le programme scrape toutes les catégories de livres du site Books to Scrape
 - Il récupère des informations détaillées de chaque livre
 - Il enregistre les résultats des extractions sous forme de fichiers CSV, un fichier par catégorie
-- Il enregistre les couvertures de livrespar catégorie en format jpeg dans un sous dossier couverture_livre
+- Il enregistre les couvertures de livres par catégorie en format jpeg dans un sous dossier couverture_livre
 - Il affiche à l'écran en temps réel les catégories et les URL des livres en cours d'extraction
 
 # Prérequis
-- Vous devez installer l'application Python sur votre machine (Ce programme est developpé sous windows 11 avec la version Python 3.12)
+- Vous devez installer l'application Python sur votre machine (Ce programme est développé sous windows 11 avec la version Python 3.12)
+-Dans la repository Orcchard/Projetnum2PythonOC de github, cliquer sur le bouton vert "<> Code" puis sur Download ZIP.
+-Extraire l'ensemble des éléments dans le dossier ou vous souhaitez stocker les datas téléchargées.
 
-### Créez l'environnement virtuel env grace à la commande : python -m venv env
+
+### Créez l'environnement virtuel env à l'aide de à la commande : python -m venv env
 ### Comment l'activer :
 - la commande sera "source env/bin/activate" si vous êtes sous Linux ou Apple
 
@@ -23,13 +26,10 @@ Ce programme est un scraper web qui extrait les informations des livres à parti
 - la commande sera  env\Scripts\activate si vous utilisez PowerShell
 
 ## Avant d'exécuter ce programme, installez les bibliothèques 
-A l'aide du fichier requirement pip install requirement
-Se placer dans le dossier où l'on a extrait l'ensemble des documents grâce à la commande cd
+Avant d'exécuter ce programme, installez les bibliothèques listées dans le fichier requirements.txt. 
 
-Dans le terminal de commande, executer la commande suivante :
-python3 -m venv env
-Activez l'environnement virtuel
-source env/bin/activate
+Dans le terminal de commande,Se placer dans le dossier où l'on a extrait l'ensemble des documents , (commande cd) exécuter la commande suivante : pip install -r requirements.txt
+
 
 ## Comment executer le programme
 - Exécutez le script "python explorer_scraping.py"
