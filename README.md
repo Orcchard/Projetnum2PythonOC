@@ -12,9 +12,10 @@ Ce programme est un scraper web qui extrait les informations des livres à parti
 - Il affiche à l'écran en temps réel les catégories et les URL des livres en cours d'extraction
 
 # Prérequis
-- Vous devez installer l'application Python sur votre machine (Ce programme est développé sous windows 11 avec la version Python 3.12)
--Dans la repository Orcchard/Projetnum2PythonOC de github, cliquer sur le bouton vert "<> Code" puis sur Download ZIP.
--Extraire l'ensemble des éléments dans le dossier ou vous souhaitez stocker les datas téléchargées.
+- Vous devez installer l'application Python sur votre machine (Ce programme est développé sous windows 11 avec la       version Python 3.12)
+- Dans la repository Orcchard/Projetnum2PythonOC de github, cliquer sur le bouton vert "<> Code" puis sur Download 
+  ZIP.
+- Extraire l'ensemble des éléments dans le dossier ou vous souhaitez stocker les datas téléchargées.
 
 
 ### Créez l'environnement virtuel env à l'aide de à la commande : python -m venv env
@@ -27,12 +28,12 @@ Ce programme est un scraper web qui extrait les informations des livres à parti
 
 ## Avant d'exécuter ce programme, installez les bibliothèques 
 Avant d'exécuter ce programme, installez les bibliothèques listées dans le fichier requirements.txt. 
-
-Dans le terminal de commande,Se placer dans le dossier où l'on a extrait l'ensemble des documents , (commande cd) exécuter la commande suivante : pip install -r requirements.txt
+Dans le terminal de commande, se placer dans le dossier seront extraits l'ensemble des documents, 
+(commande cd), saisir la commande suivante : pip install -r requirements.txt
 
 
 ## Comment executer le programme
-- Exécutez le script "python explorer_scraping.py"
+- Exécutez le script python explorer_scraping.py
 - Vérifiez les résultats : 
 
 ### Après l'exécution, si le programme fonctionne un dossier nommé Data_categorie sera créé dans le répertoire du projet. 
