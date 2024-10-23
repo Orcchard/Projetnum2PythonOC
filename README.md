@@ -28,7 +28,7 @@ Ce programme est un scraper web qui extrait les informations des livres à parti
 
 ## Avant d'exécuter ce programme, installez les bibliothèques 
 Avant d'exécuter ce programme, installez les bibliothèques listées dans le fichier requirements.txt. 
-Dans le terminal de commande, se placer dans le dossier seront extraits l'ensemble des documents, 
+Dans le terminal de commande, se placer dans le dossier où seront extraits l'ensemble des documents, 
 (commande cd), saisir la commande suivante : pip install -r requirements.txt
 
 
