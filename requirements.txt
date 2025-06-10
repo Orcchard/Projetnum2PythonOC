@@ -1,7 +1,7 @@
 beautifulsoup4==4.12.3
 bs4==0.0.2
 pylance==0.14.1
-requests==2.32.3
+requests==2.32.4
 urljoin==1.0.0
 urllib3==2.2.3
 
